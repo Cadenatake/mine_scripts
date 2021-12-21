@@ -1,8 +1,7 @@
 #!/bin/bash
 
-#第一引数 Minecraftバージョン指定
-MINECRAFT_VERSION=$1
-source "config.sh" "${MINECRAFT_VERSION}"
+cd $(dirname ${0}) && CURRENTDIR=`pwd`
+source ./config.sh
 PROGNAME=$(basename $0)
 
 # エラー発生時の処理を設定
