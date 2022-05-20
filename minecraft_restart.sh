@@ -1,8 +1,8 @@
 #!/bin/bash
 
-cd $(dirname ${0}) && CURRENTDIR=`pwd`
-source ./config.sh
+WORLDDATA_DIRNAME='Minecraft1.18.2'
 PROGNAME=$(basename $0)
+WORLDDATA_PATH="${HOME}/${WORLDDATA_DIRNAME}"
 
 # エラー発生時の処理を設定
 # 終了コード1 2 3 15の場合に第一引数のコマンドが走る
@@ -27,7 +27,7 @@ echo '---------------START---------------'
 date '+%Y/%m/%d %T'
 
 # ディレクトリ移動
-cd ${WORLDDATAPATH}
+cd ${WORLDDATA_PATH}
 pwd
 
 # ログ成形
@@ -37,11 +37,6 @@ echo ''
 tmux send-keys -t "0" "say Restart this server after 5min." ENTER
 tmux send-keys -t "0" "say Players are requested to log out. You can ignore it and play." ENTER
 tmux send-keys -t "0" "say The restart process takes about 3 minutes." ENTER
-
-#################### gitへのバックアップ処理 ####################
-tmux send-keys -t "0" "save-all" ENTER
-cp -r ${WORLDDATAPATH} ${GITPATH}
-#################### gitへのバックアップ処理 ####################
 
 sleep 4m
 tmux send-keys -t "0" "say Restart this server after 1min." ENTER
@@ -75,13 +70,15 @@ sleep 1
 #################### 再起動処理 ####################
 tmux send-keys -t "0" "stop" ENTER &&\
 sleep 30 &&\
-tmux send-keys -t "0" "bash run.sh" ENTER &&\
+tmux send-keys -t "0" "sh ./1.18.2.run.sh" ENTER &&\
 sleep 30
 #################### 再起動処理 ####################
 
 if [ $? -gt 0 ]; then
     error_exit "Lines:$LINENO: An error has occurred."
 fi
+
+echo 'Restart Done.'
 
 # ゲーム内再起動完了メッセージ
 tmux send-keys -t "0" "say Restart Done." ENTER
